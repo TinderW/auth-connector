@@ -1,10 +1,11 @@
 package requests
 
 import (
-	"auth-connector/authcon/requests/regources"
 	"bytes"
 	"encoding/json"
 	"net/http"
+
+	"github.com/TinderW/auth-connector/authcon/requests/regources"
 
 	"gitlab.com/distributed_lab/logan/v3/errors"
 )

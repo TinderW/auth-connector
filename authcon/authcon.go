@@ -1,7 +1,7 @@
 package authcon
 
 import (
-	"auth-connector/authcon/requests"
+	"github.com/TinderW/auth-connector/authcon/requests"
 	"encoding/json"
 	"net/http"
 

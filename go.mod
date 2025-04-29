@@ -1,4 +1,4 @@
-module auth-connector
+module github.com/TinderW/auth-connector
 
 go 1.23.0
 
