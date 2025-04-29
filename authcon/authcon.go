@@ -1,12 +1,18 @@
 package authcon
 
 import (
-	"github.com/TinderW/auth-connector/authcon/requests"
 	"encoding/json"
 	"net/http"
 
+	"github.com/TinderW/auth-connector/authcon/requests"
+
 	"gitlab.com/distributed_lab/logan/v3/errors"
 )
+
+const (
+	UserRole = 0	
+	AdminRole = 7
+) 
 
 type AuthConnector interface {
 	Do(req requests.AuthConnectorRequest) (interface{}, error)
