@@ -1,19 +1,19 @@
 package requests
 
 import (
-	"fmt"
 	"net/http"
+	"strconv"
 )
 
 type GenerateGroupInvtoken struct { 
 	TokenId string
-	Expiration int64
+	DaysDuration int
 }
 
-func NewGenerateGroupInvtoken(baseUrl, tokenId string, expiration int64) GenerateGroupInvtoken { 
+func NewGenerateGroupInvtoken(baseUrl, tokenId string, daysDuration int) GenerateGroupInvtoken { 
 	return GenerateGroupInvtoken{
 		TokenId: tokenId,
-		Expiration: expiration,
+		DaysDuration: daysDuration,
 	} 
 }
 
@@ -26,7 +26,7 @@ func (g GenerateGroupInvtoken) Request(baseUrl string) (*http.Request, error) {
 	}
 
 	req.Header.Add("token-id", g.TokenId)
-	req.Header.Add("day-duration", fmt.Sprint(g.Expiration))
+	req.Header.Add("day-duration", strconv.Itoa(g.DaysDuration))
 
 	return req, nil
 }

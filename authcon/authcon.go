@@ -22,7 +22,7 @@ type AuthConnector interface {
 	VerifyToken(token string) (*regources.Payload, error)
 
 	RetrieveInvtokenPayload(token string) (*regources.InvtokenPayload, error)
-	GenerateGroupInvtoken(tokenId string, expiration int64) (*regources.GroupInviteToken, error)
+	GenerateGroupInvtoken(tokenId string, dayDuration int) (*regources.GroupInviteToken, error)
 }
 
 type authConnector struct { 
@@ -69,8 +69,8 @@ func (ac *authConnector) CreateTokens(accountId string, roleId int) (*regources.
 	return &tokens.Data, nil
 }
 
-func (ac *authConnector) GenerateGroupInvtoken(tokenId string, expiration int64) (*regources.GroupInviteToken, error) { 
-	req := requests.NewGenerateGroupInvtoken(ac.url, tokenId, expiration)
+func (ac *authConnector) GenerateGroupInvtoken(tokenId string, dayDuration int) (*regources.GroupInviteToken, error) { 
+	req := requests.NewGenerateGroupInvtoken(ac.url, tokenId, dayDuration)
 
 	var token regources.GroupInviteTokenResponse
 	if err := ac.Do(req, &token); err != nil {
