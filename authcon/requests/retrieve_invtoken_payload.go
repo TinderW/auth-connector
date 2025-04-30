@@ -3,7 +3,7 @@ package requests
 import "net/http"
 
 type RetrieveInvtokenPayload struct {
-	Invtoken string `json:"invtoken"`
+	Invtoken string
 }
 
 func NewRetrieveInvtokenPayload(invtoken string) RetrieveInvtokenPayload {
@@ -15,7 +15,7 @@ func NewRetrieveInvtokenPayload(invtoken string) RetrieveInvtokenPayload {
 func (r RetrieveInvtokenPayload) Request(baseUrl string) (*http.Request, error) {
 	route := "/integrations/auth-svc/invtoken"
 
-	req, err := http.NewRequest(http.MethodPost, baseUrl + route, nil)
+	req, err := http.NewRequest(http.MethodGet, baseUrl + route, nil)
 	if err != nil {
 		return nil, err
 	}
