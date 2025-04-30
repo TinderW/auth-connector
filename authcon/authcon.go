@@ -2,7 +2,9 @@ package authcon
 
 import (
 	"encoding/json"
+	"io"
 	"net/http"
+	"time"
 
 	"github.com/TinderW/auth-connector/authcon/requests"
 	"github.com/TinderW/auth-connector/authcon/requests/regources"
@@ -27,6 +29,16 @@ type AuthConnector interface {
 
 type authConnector struct { 
 	url string
+	client http.Client
+}
+
+func NewAuthConnector(url string) AuthConnector {
+	return &authConnector{
+		url: url,
+		client: http.Client{
+			Timeout: 10 * time.Second,
+		},
+	}
 }
 
 func (ac *authConnector) Do(req requests.AuthConnectorRequest, value interface{}) error {
@@ -35,10 +47,17 @@ func (ac *authConnector) Do(req requests.AuthConnectorRequest, value interface{}
 		return errors.Wrap(err, "failed to build request")
 	}
 
-	response, err := http.DefaultClient.Do(request)
+	response, err := ac.client.Do(request)
 	if err != nil {
 		return errors.Wrap(err, "failed to send request")
 	}
+	defer response.Body.Close()
+
+	if response.StatusCode < 200 || response.StatusCode >= 300 {
+		body, _ := io.ReadAll(response.Body)
+		return errors.Errorf("HTTP %d: %s", response.StatusCode, string(body))
+	}
+
 
 	if err := json.NewDecoder(response.Body).Decode(&value); err != nil {
 		return errors.Wrap(err, "failed to decode response")
