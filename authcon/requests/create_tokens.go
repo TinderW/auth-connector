@@ -13,18 +13,18 @@ import (
 type CreateTokens struct { 
 	AccountId string
 	RoleId    int
-	route string
 }
 
 func NewCreateTokens(accountId string, roleId int) CreateTokens {
 	return CreateTokens{
 		AccountId: accountId,
 		RoleId:    roleId,
-		route:     "/integrations/auth-svc/tokens",
 	}
 }
 
 func (r CreateTokens) Request(baseUrl string) (*http.Request, error) {
+	route := "/integrations/auth-svc/auth"
+
 	regource := regources.CreateTokens{
 		Key: regources.Key{
 			ID:   "",
@@ -41,5 +41,5 @@ func (r CreateTokens) Request(baseUrl string) (*http.Request, error) {
 		return nil, errors.Wrap(err, "failed to marshal body")
 	}
 
-	return http.NewRequest(http.MethodPost, baseUrl, bytes.NewBuffer(body))
+	return http.NewRequest(http.MethodPost, baseUrl + route, bytes.NewBuffer(body))
 }

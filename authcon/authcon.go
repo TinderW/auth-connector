@@ -20,6 +20,9 @@ type AuthConnector interface {
 
 	CreateTokens(accountId string, roleId int) (*regources.Tokens, error)
 	VerifyToken(token string) (*regources.Payload, error)
+
+	RetrieveInvtokenPayload(token string) (*regources.InvtokenPayload, error)
+	GenerateGroupInvtoken(tokenId string, expiration int64) (*regources.GroupInviteToken, error)
 }
 
 type authConnector struct { 
@@ -64,4 +67,26 @@ func (ac *authConnector) CreateTokens(accountId string, roleId int) (*regources.
 	}
 
 	return &tokens.Data, nil
+}
+
+func (ac *authConnector) GenerateGroupInvtoken(tokenId string, expiration int64) (*regources.GroupInviteToken, error) { 
+	req := requests.NewGenerateGroupInvtoken(ac.url, tokenId, expiration)
+
+	var token regources.GroupInviteTokenResponse
+	if err := ac.Do(req, &token); err != nil {
+		return nil, errors.Wrap(err, "failed to get group invite token")
+	}
+
+	return &token.Data, nil
+}
+
+func (ac *authConnector) RetrieveInvtokenPayload(token string) (*regources.InvtokenPayload, error) {
+	req := requests.NewRetrieveInvtokenPayload(token)
+
+	var payload regources.InvtokenPayloadResponse
+	if err := ac.Do(req, &payload); err != nil {
+		return nil, errors.Wrap(err, "failed to get payload")
+	}
+
+	return &payload.Data, nil
 }
