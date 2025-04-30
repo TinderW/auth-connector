@@ -24,7 +24,7 @@ func NewCreateTokens(accountId string, roleId int) CreateTokens {
 	}
 }
 
-func (r *CreateTokens) Request(baseUrl string) (*http.Request, error) {
+func (r CreateTokens) Request(baseUrl string) (*http.Request, error) {
 	regource := regources.CreateTokens{
 		Key: regources.Key{
 			ID:   "",
