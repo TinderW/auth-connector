@@ -58,10 +58,10 @@ func (ac *authConnector) VerifyToken(token string) (*regources.Payload, error) {
 	return &payload.Data, nil
 }
 
-func (ac *authConnector) CreateTokens(accountId string, roleId int) (*regources.CreateTokens, error) {
+func (ac *authConnector) CreateTokens(accountId string, roleId int) (*regources.Tokens, error) {
 	req := requests.NewCreateTokens(accountId, roleId)
 
-	var tokens regources.CreateTokensResponse
+	var tokens regources.TokensResponse
 	if err := ac.Do(req, &tokens); err != nil {
 		return nil, errors.Wrap(err, "failed to get tokens")
 	}
