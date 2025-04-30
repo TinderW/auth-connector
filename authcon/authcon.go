@@ -18,7 +18,7 @@ const (
 type AuthConnector interface {
 	Do(req requests.AuthConnectorRequest, value interface{}) error
 
-	CreateTokens(accountId string, roleId int) (*regources.CreateTokens, error)
+	CreateTokens(accountId string, roleId int) (*regources.Tokens, error)
 	VerifyToken(token string) (*regources.Payload, error)
 }
 
