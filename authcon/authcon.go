@@ -54,10 +54,12 @@ func (ac *authConnector) Do(req requests.AuthConnectorRequest, value interface{}
 	defer response.Body.Close()
 
 	if response.StatusCode < 200 || response.StatusCode >= 300 {
-		body, _ := io.ReadAll(response.Body)
-		return errors.Errorf("HTTP %d: %s", response.StatusCode, string(body))
+		body, err := io.ReadAll(response.Body)
+		if err != nil {
+			return errors.New("auth-svc is unavailable")
+		}
+		return errors.Errorf("auth-svc is unavailable, %s: %s", response.Status, string(body))
 	}
-
 
 	if err := json.NewDecoder(response.Body).Decode(&value); err != nil {
 		return errors.Wrap(err, "failed to decode response")
