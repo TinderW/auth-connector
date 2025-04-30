@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	UserRole = 0	
+	UserRole = 1	
 	AdminRole = 7
 ) 
 
